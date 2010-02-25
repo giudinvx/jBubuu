@@ -1,0 +1,8 @@
+This is a simple CMS written into Javascript.
+I tested this on:
+Firefox 3.5.7
+Epiphany 2.28.0
+Chromium 5.0.324.0
+
+Unfortunately for config files you manually modifiy XML file and insert your date.
+I working for create a PHP page for modify XML file.
