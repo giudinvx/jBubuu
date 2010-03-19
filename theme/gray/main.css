@@ -1,5 +1,5 @@
 body {
-background-color: #000000;
+background-color: #919191;
 color: #FFFFFF;
 font-family: Georgia,Times,'Times New Roman',serif;
 font-size: 15px;
@@ -7,8 +7,8 @@ line-height: 22px;
 }
  
 #body-container {
-border: 1px solid #121212;
-background-color: #121212;
+border: 1px solid #686868;
+background-color: #686868;
 margin-bottom: 0;
 margin-left: auto;
 margin-right: auto;
@@ -22,7 +22,7 @@ width: 800px;
 
 #container {
 border: 1px solid #333333;
-background-color: #000000;
+background-color: #353535;
 height: 445px;
 width: 780px; 
 margin: 40px 10px 10px 10px;
@@ -68,7 +68,7 @@ background-color: #999999;
 #navigation ul ul{
 position: absolute;
 top: 30px; 
-background-color: black;
+background-color: #353535;
 
 visibility: hidden;
 }

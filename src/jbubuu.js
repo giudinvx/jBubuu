@@ -67,7 +67,7 @@ jBubuu = {
 			var pages  = config.getElementsByTagName("mainmenu")[0].childNodes[0].nodeValue; 
 			var onlyme = config.getElementsByTagName("singlemenu")[0].childNodes[0].nodeValue;
 
-			document.getElementById('menu').innerHTML = onlyme+jBubuu.corefunc.repl(slmenu, ["#menu", " Menu"])+pages;
+			document.getElementById('navigation').innerHTML = onlyme+jBubuu.corefunc.repl(slmenu, ["#menu", " Menu"])+pages;
 		}
 			
 	},
@@ -136,10 +136,10 @@ jBubuu = {
 
 			for (var i = 0; i < npag; i++) {
 				if (pagobj[i].getAttribute("name") == nampag && (typeof nampag == "string") ) {
-					document.getElementById("space").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue; return;
+					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue; return;
 				} 
 			}
-			document.getElementById("space").innerHTML = "page not found"; return;
+			document.getElementById("container").innerHTML = "page not found"; return;
 		}
 	}
 }
