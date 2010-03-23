@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu select="&lt;li&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;@{menu}&quot;&gt;@{Menu}&lt;/a&gt;&lt;ul&gt;&lt;/li&gt;">
+<menu>
 	<mainmenu><![CDATA[
 		<li><a href="#chlog">Changelog</a></li>
 		<li><a href="#about">About Me</a></li>
