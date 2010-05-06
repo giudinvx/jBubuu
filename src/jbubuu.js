@@ -23,7 +23,7 @@ window.JBubuu = function() {
 }
 
 jBubuu = {
-	version: "0.0.1",
+	version: "0.0.2",
 	
 	config: {
 		titlecms: "", filecss: "", linkcss: "",
@@ -40,23 +40,22 @@ jBubuu = {
 				
 		setConfvar: function (namefile) {
 			var config = jBubuu.corefunc.ajax(namefile);
-			// Set value to all variables.
+
 			this.titlecms = config.getElementsByTagName("title")[0].childNodes[0].nodeValue;
 			this.filecss  = config.getElementsByTagName("theme")[0].childNodes[0].nodeValue;
 			this.linkcss  = document.createElement("link");  
 		},
 		
 		setTheme: function (namefile) {
-			// Set the Css file.
 			this.linkcss.href = this.filecss+"main.css";
 			this.linkcss.rel  = "stylesheet";
 			this.linkcss.type = "text/css"; 
 			document.getElementsByTagName("head")[0].appendChild(this.linkcss); 
-			// Set title of cms
+			
 			document.title = this.titlecms;
 			
 			var theme = jBubuu.corefunc.ajax(namefile+"main.html");
-			// Output.
+
 			document.body.innerHTML = theme;
 		},
 		
@@ -101,6 +100,10 @@ jBubuu = {
 			}
 		},
 		
+		modules: function (name) {
+			this.ajax(name);
+		},
+		
 		repl: function (str, arr) {
 			var lengarr = arr.length;
 			
@@ -123,7 +126,7 @@ jBubuu = {
 					if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
 						this.oldH = newH; 
  						window.location.hash = newH;
-						jBubuu.corefunc.ckPag(newH);return;
+						jBubuu.corefunc.ckPag(newH); return;
 					}
 				}
 				setInterval(ckCro, 500);
