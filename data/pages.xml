@@ -12,4 +12,9 @@
 	15/02/2010 - Create a prototype of logo.<br/>
 	19/03/2010 - Create a new thema.<br/>
 	]]></page>
+	<page name="menu"><![CDATA[
+	<a href="#home">home</a><br/>
+	<a href="#chlog">chlog</a><br/>
+	<a href="#about">about</a><br/>
+	]]></page>
 </pages>
