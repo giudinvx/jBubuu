@@ -35,7 +35,7 @@ jBubuu = {
 							3 : 'jBubuu.corefunc.ckCr();'};
 			for (var pos in confile) {
 				eval(confile[pos]);
-			}
+			} eval(jBubuu.corefunc.modules("blog"));
 		},
 				
 		setConfvar: function (namefile) {
@@ -91,7 +91,7 @@ jBubuu = {
 					var type = xhr.getResponseHeader('Content-type');
 					if (type == 'application/xml') {
 						return xhr.responseXML;
-					} else if (type == 'text/html') {
+					} else if (type == 'text/html' || type == 'application/javascript') {
 						return xhr.responseText;
 					} else {
 						alert('Unknown Content-type');
@@ -101,7 +101,9 @@ jBubuu = {
 		},
 		
 		modules: function (name) {
-			this.ajax(name);
+			var lol = this.ajax("src/modules/"+name+"/"+name+".js");
+			eval(lol);
+			
 		},
 		
 		repl: function (str, arr) {
@@ -139,7 +141,8 @@ jBubuu = {
 
 			for (var i = 0; i < npag; i++) {
 				if (pagobj[i].getAttribute("name") == nampag && (typeof nampag == "string") ) {
-					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue; return;
+					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue; 
+					return;
 				} 
 			}
 			document.getElementById("container").innerHTML = "page not found"; return;
