@@ -43,7 +43,7 @@ jBubuu = {
 
 			this.titlecms = config.getElementsByTagName("title")[0].childNodes[0].nodeValue;
 			this.filecss  = config.getElementsByTagName("theme")[0].childNodes[0].nodeValue;
-			this.linkcss  = document.createElement("link");  
+			this.linkcss  = document.createElement("link");
 		},
 		
 		setTheme: function (namefile) {
