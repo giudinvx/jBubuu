@@ -103,7 +103,6 @@ jBubuu = {
 		modules: function (name) {
 			var lol = this.ajax("src/modules/"+name+"/"+name+".js");
 			eval(lol);
-			
 		},
 		
 		repl: function (str, arr) {
