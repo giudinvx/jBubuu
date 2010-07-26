@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<articles>
+	<post id="0" info="name, tags, date"><![CDATA[
+		This is a test
+	]]></post>
+	<post id="1" info="name, tags, date"><![CDATA[
+		A test of blog module
+	]]></post>
+</articles>

@@ -32,10 +32,11 @@ jBubuu = {
 			this.setConfvar("data/config.xml");  
 			var confile = {	1 : 'this.setTheme("'+this.filecss+'");',
 							2 : 'this.setMenu("data/menu.xml");',
-							3 : 'jBubuu.corefunc.ckCr();'};
+							3 : 'jBubuu.corefunc.ckCr();',
+							4 : 'jBubuu.corefunc.modules("blog");'};
 			for (var pos in confile) {
 				eval(confile[pos]);
-			} eval(jBubuu.corefunc.modules("blog"));
+			}  
 		},
 				
 		setConfvar: function (namefile) {
@@ -119,7 +120,7 @@ jBubuu = {
 		},
 		
 		ckCr: function () {
-				jBubuu.corefunc.ckPag("home");
+				this.ckPag("home");
 
 				function ckCro() {
 					var newH = location.hash.substring(1); 
@@ -127,7 +128,9 @@ jBubuu = {
 					if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
 						this.oldH = newH; 
  						window.location.hash = newH;
-						jBubuu.corefunc.ckPag(newH); return;
+						jBubuu.corefunc.ckPag(newH);
+						
+						return;
 					}
 				}
 				setInterval(ckCro, 500);
@@ -140,11 +143,14 @@ jBubuu = {
 
 			for (var i = 0; i < npag; i++) {
 				if (pagobj[i].getAttribute("name") == nampag && (typeof nampag == "string") ) {
-					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue; 
+					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue;
+					
 					return;
 				} 
 			}
-			document.getElementById("container").innerHTML = "page not found"; return;
+			document.getElementById("container").innerHTML = "Page not found";
+			
+			return;
 		}
 	}
 }
