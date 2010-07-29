@@ -102,7 +102,7 @@ jBubuu = {
 		},
 		
 		modules: function (name) {
-			var lol = this.ajax("src/modules/"+name+"/"+name+".js");
+			var lol = this.ajax("src/modules/"+name+"/modmain.js");
 			eval(lol);
 		},
 		
@@ -143,7 +143,7 @@ jBubuu = {
 
 			for (var i = 0; i < npag; i++) {
 				if (pagobj[i].getAttribute("name") == nampag && (typeof nampag == "string") ) {
-					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].childNodes[0].nodeValue;
+					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
 					
 					return;
 				} 

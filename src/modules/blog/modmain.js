@@ -8,7 +8,6 @@
 	var articles = carticles.getElementsByTagName("articles");
 	var posts    = articles[0].getElementsByTagName("post");
 	var lposts   = posts.length;
-	//divblog.innerHTML = pos[0].firstChild.nodeValue;
  
 	for(var j = 0; j < lposts; j++) {
 		var divarticles = document.getElementById("blog").appendChild(document.createElement("div")); 
