@@ -19,45 +19,46 @@
 (function() {
 
 window.JBubuu = function() {
-	jBubuu.config.start();
+	jBubuu.config.init();
 }
 
 jBubuu = {
-	version: "0.0.2",
+	version: "0.0.3",
 	
 	config: {
-		titlecms: "", filecss: "", linkcss: "",
-		
-		start: function () {
-			this.setConfvar("data/config.xml");  
-			var confile = {	1 : 'this.setTheme("'+this.filecss+'");',
+		titlecms: "", 
+				
+		init: function () {			
+			var config = jBubuu.corefunc.ajax("data/config.xml");
+			
+			this.titlecms = config.getElementsByTagName("title")[0].firstChild.nodeValue;
+			var filecss  = config.getElementsByTagName("theme")[0].firstChild.nodeValue;
+
+			var confile = {	1 : 'this.setTheme(filecss);',
 							2 : 'this.setMenu("data/menu.xml");',
 							3 : 'jBubuu.corefunc.ckCr();',
-							4 : 'jBubuu.corefunc.modules("blog");'};
+							4 : 'jBubuu.corefunc.modules("blog");' };
+							
 			for (var pos in confile) {
 				eval(confile[pos]);
 			}  
 		},
-				
-		setConfvar: function (namefile) {
-			var config = jBubuu.corefunc.ajax(namefile);
-
-			this.titlecms = config.getElementsByTagName("title")[0].childNodes[0].nodeValue;
-			this.filecss  = config.getElementsByTagName("theme")[0].childNodes[0].nodeValue;
-			this.linkcss  = document.createElement("link");
-		},
 		
 		setTheme: function (namefile) {
-			this.linkcss.href = this.filecss+"main.css";
-			this.linkcss.rel  = "stylesheet";
-			this.linkcss.type = "text/css"; 
-			document.getElementsByTagName("head")[0].appendChild(this.linkcss); 
-			
-			document.title = this.titlecms;
-			
-			var theme = jBubuu.corefunc.ajax(namefile+"main.html");
+			this.setCss(namefile);
+ 
+ 			document.title = this.titlecms;
 
-			document.body.innerHTML = theme;
+			document.body.innerHTML = jBubuu.corefunc.ajax(namefile+"main.html");
+		},
+		
+		setCss: function (namecss) {
+			var linkcss  = document.createElement("link");
+			linkcss.href = namecss+"main.css";
+			linkcss.rel  = "stylesheet";
+			linkcss.type = "text/css"; 
+			
+			document.getElementsByTagName("head")[0].appendChild(linkcss);
 		},
 		
 		setMenu: function (namefile) {
@@ -116,6 +117,7 @@ jBubuu = {
 			for (var i = 0; i < lengarr; i++) {
 				str = str.replace(/([^.])(@\{(.*?)\})/, "\$1"+arr[i]);
 			}
+			
 			return str;
 		},
 		
