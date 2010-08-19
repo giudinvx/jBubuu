@@ -32,7 +32,7 @@ jBubuu = {
 			var config = jBubuu.corefunc.ajax("data/config.xml");
 			
 			this.titlecms = config.getElementsByTagName("title")[0].firstChild.nodeValue;
-			var filecss  = config.getElementsByTagName("theme")[0].firstChild.nodeValue;
+			var filecss   = config.getElementsByTagName("theme")[0].firstChild.nodeValue;
 
 			var confile = {	1 : 'this.setTheme(filecss);',
 							2 : 'this.setMenu("data/menu.xml");',
@@ -65,8 +65,8 @@ jBubuu = {
 			var config = jBubuu.corefunc.ajax(namefile);
 			
 			var slmenu = config.getElementsByTagName("menu")[0].getAttribute("select"); 		
-			var pages  = config.getElementsByTagName("mainmenu")[0].childNodes[0].nodeValue; 
-			var onlyme = config.getElementsByTagName("singlemenu")[0].childNodes[0].nodeValue;
+			var pages  = config.getElementsByTagName("mainmenu")[0].firstChild.nodeValue; 
+			var onlyme = config.getElementsByTagName("singlemenu")[0].firstChild.nodeValue;
 
 			document.getElementById('navigation').innerHTML = onlyme+jBubuu.corefunc.repl(slmenu, ["#menu", " Menu"])+pages;
 		}
@@ -121,10 +121,29 @@ jBubuu = {
 			return str;
 		},
 		
+		goChg: function (url) {
+			var aquery = Array();
+			var partq = url.split(/&/);
+			var partl = partq.length;
+			
+			for (var l = 0; l < partl; l++) {
+				var querys = partq[l].split(/=/);
+				
+				if (querys[1]) {
+					aquery[querys[0]] = querys[1];
+				} else {
+					aquery["page"] = querys[1];
+				}
+				
+			}
+			
+				return aquery;
+		},
+
 		ckCr: function () {
 				this.ckPag("home");
 
-				function ckCro() {
+				var ckCro = function () {
 					var newH = location.hash.substring(1); 
 
 					if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
