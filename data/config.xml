@@ -2,4 +2,5 @@
 <config>
 <title>jBubuu</title>
 <theme>theme/black/</theme>
+<modules>blog</modules>
 </config>

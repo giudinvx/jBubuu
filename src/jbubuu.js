@@ -17,7 +17,7 @@
 //      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //      MA 02110-1301, USA.
 (function() {
-
+//jBubuu.corefunc.modules("blog");
 window.JBubuu = function() {
 	jBubuu.config.init();
 }
@@ -26,18 +26,18 @@ jBubuu = {
 	version: "0.0.3",
 	
 	config: {
-		titlecms: "", 
+		titlecms: "", modules: "",
 				
 		init: function () {			
 			var config = jBubuu.corefunc.ajax("data/config.xml");
 			
+			this.modules  = config.getElementsByTagName("modules")[0].firstChild.nodeValue;
 			this.titlecms = config.getElementsByTagName("title")[0].firstChild.nodeValue;
 			var filecss   = config.getElementsByTagName("theme")[0].firstChild.nodeValue;
 
 			var confile = {	1 : 'this.setTheme(filecss);',
 							2 : 'this.setMenu("data/menu.xml");',
-							3 : 'jBubuu.corefunc.ckCr();',
-							4 : 'jBubuu.corefunc.modules("blog");' };
+							3 : 'jBubuu.corefunc.ckCr();' };
 							
 			for (var pos in confile) {
 				eval(confile[pos]);
@@ -123,21 +123,21 @@ jBubuu = {
 		
 		goChg: function (url) {
 			var aquery = Array();
+	
+			if (!url.match(/\?(.*)$/)) {
+				aquery["page"] = url;
+				return aquery;
+			}
+
 			var partq = url.split(/&/);
 			var partl = partq.length;
 			
 			for (var l = 0; l < partl; l++) {
 				var querys = partq[l].split(/=/);
-				
-				if (querys[1]) {
-					aquery[querys[0]] = querys[1];
-				} else {
-					aquery["page"] = querys[1];
-				}
-				
+				aquery[querys[0]] = querys[1];
 			}
-			
-				return aquery;
+
+			return aquery;
 		},
 
 		ckCr: function () {
@@ -157,20 +157,23 @@ jBubuu = {
 				setInterval(ckCro, 500);
 		},
 		
-		ckPag: function (nampag) {
-			var pages  = this.ajax("data/pages.xml");
-			var pagobj = pages.getElementsByTagName("page");
-			var npag   = pagobj.length;
-
-			for (var i = 0; i < npag; i++) {
-				if (pagobj[i].getAttribute("name") == nampag && (typeof nampag == "string") ) {
-					document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
-					
-					return;
-				} 
-			}
-			document.getElementById("container").innerHTML = "Page not found";
+		ckPag: function (query) {
+			var chindex = this.goChg(query);
 			
+			if (typeof chindex["page"] == "string") {
+				var pages  = this.ajax("data/pages.xml");
+				var pagobj = pages.getElementsByTagName("page");
+				var npag   = pagobj.length;
+
+				for (var i = 0; i < npag; i++) {
+					if (pagobj[i].getAttribute("name") == chindex["page"]) {
+						document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
+						
+						return;
+					} 
+				}
+				document.getElementById("container").innerHTML = "Page not found";
+			}
 			return;
 		}
 	}
