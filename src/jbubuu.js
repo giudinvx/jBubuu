@@ -17,7 +17,6 @@
 //      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //      MA 02110-1301, USA.
 (function() {
-//jBubuu.corefunc.modules("blog");
 window.JBubuu = function() {
 	jBubuu.config.init();
 }
@@ -122,32 +121,31 @@ jBubuu = {
 		},
 		
 		goChg: function (url) {
-			var aquery = Array();
-	
-			if (!url.match(/\?(.*)$/)) {
-				aquery["page"] = url;
-				return aquery;
-			}
-
-			var partq = url.split(/&/);
-			var partl = partq.length;
+			var result = {};
 			
-			for (var l = 0; l < partl; l++) {
-				var querys = partq[l].split(/=/);
-				aquery[querys[0]] = querys[1];
+			var page = url.match(/(^[a-z0-9]*)$/);
+			
+			if (page || page == "") {
+				result["page"] = page[1];
+				
+				return result;
 			}
-
-			return aquery;
+			
+			url.replace (
+				new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+				function($0, $1, $2, $3) { result[$1] = $3; }
+			);
+			
+			return result;
 		},
 
 		ckCr: function () {
-				this.ckPag("home");
-
+			this.ckPag("home");
 				var ckCro = function () {
-					var newH = location.hash.substring(1); 
+					var newH = location.hash.substring(1);
 
 					if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
-						this.oldH = newH; 
+						this.oldH = newH;
  						window.location.hash = newH;
 						jBubuu.corefunc.ckPag(newH);
 						
@@ -156,24 +154,29 @@ jBubuu = {
 				}
 				setInterval(ckCro, 500);
 		},
-		
+
 		ckPag: function (query) {
 			var chindex = this.goChg(query);
-			
-			if (typeof chindex["page"] == "string") {
+
+			if (chindex.page) {
 				var pages  = this.ajax("data/pages.xml");
 				var pagobj = pages.getElementsByTagName("page");
 				var npag   = pagobj.length;
 
 				for (var i = 0; i < npag; i++) {
-					if (pagobj[i].getAttribute("name") == chindex["page"]) {
+					if (pagobj[i].getAttribute("name") == chindex.page) {
 						document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
-						
+
 						return;
 					} 
 				}
-				document.getElementById("container").innerHTML = "Page not found";
+				document.getElementById("container").innerHTML = "404 Page not found";
+			} else if (chindex.module) {
+				jBubuu.corefunc.modules(chindex.module);
+			} else {
+				document.getElementById("container").innerHTML = "BohBoh";
 			}
+			
 			return;
 		}
 	}

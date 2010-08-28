@@ -6,5 +6,6 @@
 	]]></mainmenu>
 	<singlemenu><![CDATA[
 		<li><a href="#home">Home</a></li>
+		<li><a href="#module=blog">Blog</a></li>
 	]]></singlemenu>
 </menu>
