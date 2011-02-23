@@ -1,6 +1,6 @@
 //      jbubuu.js
 //      
-//      Copyright 2010 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
+//      Copyright 2011 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
 //      
 //      This program is free software; you can redistribute it and/or modify
 //      it under the terms of the GNU General Public License as published by
@@ -17,17 +17,18 @@
 //      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //      MA 02110-1301, USA.
 (function() {
+
 window.JBubuu = function() {
 	jBubuu.config.init();
 }
 
 jBubuu = {
-	version: "0.0.3",
+	version: "0.0.4",
 	
 	config: {
 		titlecms: "", modules: "",
 				
-		init: function () {			
+		init: function () {
 			var config = jBubuu.corefunc.ajax("data/config.xml");
 			
 			this.modules  = config.getElementsByTagName("modules")[0].firstChild.nodeValue;
@@ -36,7 +37,7 @@ jBubuu = {
 
 			var confile = {	1 : 'this.setTheme(filecss);',
 							2 : 'this.setMenu("data/menu.xml");',
-							3 : 'jBubuu.corefunc.ckCr();' };
+							3 : 'jBubuu.corefunc.checkhash();' };
 							
 			for (var pos in confile) {
 				eval(confile[pos]);
@@ -63,11 +64,20 @@ jBubuu = {
 		setMenu: function (namefile) {
 			var config = jBubuu.corefunc.ajax(namefile);
 			
-			var slmenu = config.getElementsByTagName("menu")[0].getAttribute("select"); 		
-			var pages  = config.getElementsByTagName("mainmenu")[0].firstChild.nodeValue; 
-			var onlyme = config.getElementsByTagName("singlemenu")[0].firstChild.nodeValue;
+			var slmenu = this.getXmlElement( config, "menu", "select" );
+			var pages  = this.getXmlElement( config, "mainmenu" );
+			var onlyme = this.getXmlElement( config, "singlemenu" );
 
 			document.getElementById('navigation').innerHTML = onlyme+jBubuu.corefunc.repl(slmenu, ["#menu", " Menu"])+pages;
+		},
+		
+		getXmlElement: function( file, elem, getAttr ) 
+		{
+			if( typeof getAttr == "undefined" ) {
+				return file.getElementsByTagName( elem )[0].firstChild.nodeValue;
+			} else {
+				return file.getElementsByTagName( elem )[0].getAttribute( getAttr );
+			}
 		}
 			
 	},
@@ -75,19 +85,18 @@ jBubuu = {
 	corefunc: {
 		oldH: "",
 		
-		ajax: function (path) {
-			if (window.XMLHttpRequest) {
+		ajax: function ( file ) {
+			if (window.XMLHttpRequest)
 				var xhr = new XMLHttpRequest();
-			}
-			else {
+			else
 				var xhr = new ActiveXObject('Microsoft.XMLHTTP');
-			}
-			xhr.open('GET', path, false);
+				
+			xhr.open('GET', file, false);
 			xhr.send(null);
 
 			if (xhr.readyState == 4) {
 				if (xhr.status != 200) {
-					alert('Error '+xhr.status+' status');
+					throw new Error( "Error "+xhr.status+" status" );
 				} else {
 					var type = xhr.getResponseHeader('Content-type');
 					if (type == 'application/xml') {
@@ -95,32 +104,34 @@ jBubuu = {
 					} else if (type == 'text/html' || type == 'application/javascript') {
 						return xhr.responseText;
 					} else {
-						alert('Unknown Content-type');
+						throw new Error( "Unknown Content-type" );
 					}
 				}
 			}
 		},
 		
 		modules: function (name) {
-			var lol = this.ajax("src/modules/"+name+"/modmain.js");
-			eval(lol);
+			try {
+				var exmod = this.ajax("src/modules/"+name+"/modmain.js");
+				eval(exmod);
+			} catch (e) {
+				console.log( e.message );
+			}
 		},
 		
 		repl: function (str, arr) {
 			var lengarr = arr.length;
 			
-			if (lengarr == 1) {
+			if (lengarr == 1)
 				return str.replace("@{"+arr[0]+"}", arr[0]);
-			}
 
-			for (var i = 0; i < lengarr; i++) {
+			for (var i = 0; i < lengarr; i++)
 				str = str.replace(/([^.])(@\{(.*?)\})/, "\$1"+arr[i]);
-			}
 			
 			return str;
 		},
 		
-		goChg: function (url) {
+		query: function (url) {
 			var result = {};
 			
 			var page = url.match(/(^[a-z0-9]*)$/);
@@ -139,44 +150,41 @@ jBubuu = {
 			return result;
 		},
 
-		ckCr: function () {
-			this.ckPag("home");
-				var ckCro = function () {
-					var newH = location.hash.substring(1);
+		checkhash: function () {
+			this.changepag("home");
 
-					if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
-						this.oldH = newH;
- 						window.location.hash = newH;
-						jBubuu.corefunc.ckPag(newH);
+			setInterval( function () {
+				var newH = location.hash.substring(1);
+
+				if (/[#?].+/.exec(window.location.hash) && this.oldH != newH) {
+					this.oldH = newH;
+					window.location.hash = newH;
+					jBubuu.corefunc.changepag(newH);
 						
+					return;
+				}
+			}, 500);
+		},
+
+		changepag: function (pagename) {
+			var changepage = this.query(pagename);
+
+			if( changepage.page ) {
+				var pages  = this.ajax("data/pages.xml");
+				var pagobj = pages.getElementsByTagName("page");
+
+				for (var i = 0, npag = pagobj.length; i < npag; i++) {
+					if (pagobj[i].getAttribute("name") == changepage.page) {
+						document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
 						return;
 					}
 				}
-				setInterval(ckCro, 500);
-		},
-
-		ckPag: function (query) {
-			var chindex = this.goChg(query);
-
-			if (chindex.page) {
-				var pages  = this.ajax("data/pages.xml");
-				var pagobj = pages.getElementsByTagName("page");
-				var npag   = pagobj.length;
-
-				for (var i = 0; i < npag; i++) {
-					if (pagobj[i].getAttribute("name") == chindex.page) {
-						document.getElementById("container").innerHTML = pages.getElementsByTagName("page")[i].firstChild.nodeValue;
-
-						return;
-					} 
-				}
 				document.getElementById("container").innerHTML = "404 Page not found";
-			} else if (chindex.module) {
-				jBubuu.corefunc.modules(chindex.module);
+			} else if (changepage.module) {
+				jBubuu.corefunc.modules(changepage.module);
 			} else {
-				document.getElementById("container").innerHTML = "BohBoh";
+				document.getElementById("container").innerHTML = "404 Page not found";
 			}
-			
 			return;
 		}
 	}

@@ -1,6 +1,6 @@
 //      modmain.js
 //      
-//      Copyright 2010 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
+//      Copyright 2011 Giuseppe D'Inverno <giudinvx[at]gmail[dot]com>
 //      
 //      This program is free software; you can redistribute it and/or modify
 //      it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 //      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //      MA 02110-1301, USA.
 (function() {
-
+	document.getElementById("container").innerHTML = "";
 	var divblog = document.getElementById("container").appendChild(document.createElement("div")); 
 	divblog.setAttribute("id", "blog");
 	
