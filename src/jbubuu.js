@@ -71,6 +71,12 @@ jBubuu = {
 			document.getElementById('navigation').innerHTML = onlyme+jBubuu.corefunc.repl(slmenu, ["#menu", " Menu"])+pages;
 		},
 		
+		setTmpl: function () {},
+		
+		enTmpl: function () {},
+		
+		
+		
 		getXmlElement: function( file, elem, getAttr ) 
 		{
 			if( typeof getAttr == "undefined" ) {
